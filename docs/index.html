@@ -103,7 +103,12 @@ class Session:
                 return set_cookie_value[start_idx:end_idx]
 
         def login(self):
-                &#34;&#34;&#34;Login using user:password to get session token&#34;&#34;&#34;
+                &#34;&#34;&#34;Login using user:password to get session token
+
+                See:
+                        http://archiva.apache.org/docs/1.4-M4/rest-docs-redback-rest-api/resource_LoginService.html#path__loginService_logIn.html
+
+                &#34;&#34;&#34;
 
                 # data is sent as xml and json response is expected
                 headers = {
@@ -142,7 +147,12 @@ class Session:
                                 res.headers[&#34;Set-Cookie&#34;])
 
         def logout(self):
-                &#34;&#34;&#34;Logout from Archiva session&#34;&#34;&#34;
+                &#34;&#34;&#34;Logout from Archiva session
+
+                See:
+                        http://archiva.apache.org/docs/1.4-M4/rest-docs-redback-rest-api/resource_LoginService.html#path__loginService_logout.html
+
+                &#34;&#34;&#34;
 
                 # must refer to current session
                 headers = {&#34;Cookie&#34;: self.session_cookie}
@@ -235,6 +245,9 @@ browseService/versionsList/{package_group}/{package_name}&#34;
 
                 Raises:
                         ErrorResponse if != 200 OK
+
+                See:
+                        http://archiva.apache.org/docs/1.4-M4/rest-docs-archiva-rest-api/resource_BrowseService.html#path__browseService_artifactDownloadInfos_-g-_-a-_-v-.html
                 &#34;&#34;&#34;
 
                 # must be authenticated
@@ -419,7 +432,7 @@ browseService/artifactDownloadInfos/{package_group}/{package_name}/{package_vers
 </dd>
 <dt id="archiva.Session"><code class="flex name class">
 <span>class <span class="ident">Session</span></span>
-<span>(</span><span>host, user, password, *, set_referer=False, logger=<archiva.logger.Logger object at 0x10df5b240>)</span>
+<span>(</span><span>host, user, password, *, set_referer=False, logger=<archiva.logger.Logger object at 0x106092eb8>)</span>
 </code></dt>
 <dd>
 <section class="desc"><p>Represents Archiva Session</p>
@@ -484,7 +497,12 @@ browseService/artifactDownloadInfos/{package_group}/{package_name}/{package_vers
                 return set_cookie_value[start_idx:end_idx]
 
         def login(self):
-                &#34;&#34;&#34;Login using user:password to get session token&#34;&#34;&#34;
+                &#34;&#34;&#34;Login using user:password to get session token
+
+                See:
+                        http://archiva.apache.org/docs/1.4-M4/rest-docs-redback-rest-api/resource_LoginService.html#path__loginService_logIn.html
+
+                &#34;&#34;&#34;
 
                 # data is sent as xml and json response is expected
                 headers = {
@@ -523,7 +541,12 @@ browseService/artifactDownloadInfos/{package_group}/{package_name}/{package_vers
                                 res.headers[&#34;Set-Cookie&#34;])
 
         def logout(self):
-                &#34;&#34;&#34;Logout from Archiva session&#34;&#34;&#34;
+                &#34;&#34;&#34;Logout from Archiva session
+
+                See:
+                        http://archiva.apache.org/docs/1.4-M4/rest-docs-redback-rest-api/resource_LoginService.html#path__loginService_logout.html
+
+                &#34;&#34;&#34;
 
                 # must refer to current session
                 headers = {&#34;Cookie&#34;: self.session_cookie}
@@ -616,6 +639,9 @@ browseService/versionsList/{package_group}/{package_name}&#34;
 
                 Raises:
                         ErrorResponse if != 200 OK
+
+                See:
+                        http://archiva.apache.org/docs/1.4-M4/rest-docs-archiva-rest-api/resource_BrowseService.html#path__browseService_artifactDownloadInfos_-g-_-a-_-v-.html
                 &#34;&#34;&#34;
 
                 # must be authenticated
@@ -831,7 +857,9 @@ browseService/artifactDownloadInfos/{package_group}/{package_name}/{package_vers
 <dl>
 <dt><a title="archiva.ErrorResponse" href="#archiva.ErrorResponse"><code>ErrorResponse</code></a> <code>if</code> != <code>200</code> <code>OK</code></dt>
 <dd>&nbsp;</dd>
-</dl></section>
+</dl>
+<h2 id="see">See</h2>
+<p><a href="http://archiva.apache.org/docs/1.4-M4/rest-docs-archiva-rest-api/resource_BrowseService.html#path__browseService_artifactDownloadInfos_-g-_-a-_-v-.html">http://archiva.apache.org/docs/1.4-M4/rest-docs-archiva-rest-api/resource_BrowseService.html#path__browseService_artifactDownloadInfos_-g-_-a-_-v-.html</a></p></section>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">        def get_download_infos(self, package_group, package_name, package_version):
@@ -873,6 +901,9 @@ browseService/artifactDownloadInfos/{package_group}/{package_name}/{package_vers
 
                 Raises:
                         ErrorResponse if != 200 OK
+
+                See:
+                        http://archiva.apache.org/docs/1.4-M4/rest-docs-archiva-rest-api/resource_BrowseService.html#path__browseService_artifactDownloadInfos_-g-_-a-_-v-.html
                 &#34;&#34;&#34;
 
                 # must be authenticated
@@ -971,11 +1002,18 @@ browseService/versionsList/{package_group}/{package_name}&#34;
 <span>def <span class="ident">login</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Login using user:password to get session token</p></section>
+<section class="desc"><p>Login using user:password to get session token</p>
+<h2 id="see">See</h2>
+<p><a href="http://archiva.apache.org/docs/1.4-M4/rest-docs-redback-rest-api/resource_LoginService.html#path__loginService_logIn.html">http://archiva.apache.org/docs/1.4-M4/rest-docs-redback-rest-api/resource_LoginService.html#path__loginService_logIn.html</a></p></section>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">def login(self):
-        &#34;&#34;&#34;Login using user:password to get session token&#34;&#34;&#34;
+        &#34;&#34;&#34;Login using user:password to get session token
+
+        See:
+                http://archiva.apache.org/docs/1.4-M4/rest-docs-redback-rest-api/resource_LoginService.html#path__loginService_logIn.html
+
+        &#34;&#34;&#34;
 
         # data is sent as xml and json response is expected
         headers = {
@@ -1018,11 +1056,18 @@ browseService/versionsList/{package_group}/{package_name}&#34;
 <span>def <span class="ident">logout</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Logout from Archiva session</p></section>
+<section class="desc"><p>Logout from Archiva session</p>
+<h2 id="see">See</h2>
+<p><a href="http://archiva.apache.org/docs/1.4-M4/rest-docs-redback-rest-api/resource_LoginService.html#path__loginService_logout.html">http://archiva.apache.org/docs/1.4-M4/rest-docs-redback-rest-api/resource_LoginService.html#path__loginService_logout.html</a></p></section>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">def logout(self):
-        &#34;&#34;&#34;Logout from Archiva session&#34;&#34;&#34;
+        &#34;&#34;&#34;Logout from Archiva session
+
+        See:
+                http://archiva.apache.org/docs/1.4-M4/rest-docs-redback-rest-api/resource_LoginService.html#path__loginService_logout.html
+
+        &#34;&#34;&#34;
 
         # must refer to current session
         headers = {&#34;Cookie&#34;: self.session_cookie}

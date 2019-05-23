@@ -79,7 +79,12 @@ class Session:
 		return set_cookie_value[start_idx:end_idx]
 
 	def login(self):
-		"""Login using user:password to get session token"""
+		"""Login using user:password to get session token
+
+		See:
+			http://archiva.apache.org/docs/1.4-M4/rest-docs-redback-rest-api/resource_LoginService.html#path__loginService_logIn.html
+
+		"""
 
 		# data is sent as xml and json response is expected
 		headers = {
@@ -118,7 +123,12 @@ class Session:
 				res.headers["Set-Cookie"])
 
 	def logout(self):
-		"""Logout from Archiva session"""
+		"""Logout from Archiva session
+
+		See:
+			http://archiva.apache.org/docs/1.4-M4/rest-docs-redback-rest-api/resource_LoginService.html#path__loginService_logout.html
+
+		"""
 
 		# must refer to current session
 		headers = {"Cookie": self.session_cookie}
@@ -211,6 +221,9 @@ browseService/versionsList/{package_group}/{package_name}"
 
 		Raises:
 			ErrorResponse if != 200 OK
+
+		See:
+			http://archiva.apache.org/docs/1.4-M4/rest-docs-archiva-rest-api/resource_BrowseService.html#path__browseService_artifactDownloadInfos_-g-_-a-_-v-.html
 		"""
 
 		# must be authenticated
