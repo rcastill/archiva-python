@@ -1,6 +1,6 @@
 # Archiva Python
 
-`archiva-python` is a minimal python3 interface with a subset of Apache Archiva's REST API.
+`archiva-python` is a minimal python3 interface for a subset of Apache Archiva's REST API.
 
 ## Roadmap
 
@@ -14,11 +14,9 @@ The following feature subset is planned to be supported:
 - [ ] artifactDownloadInfos
 - [ ] Download a package
 
-
-
 ## How to Install
 
-Because this project is in early stages,  you must clone this repo.
+Because this project is in its early stages,  you must clone this repo.
 
 **Remember** to install `requirements.txt` packages:
 
@@ -41,7 +39,7 @@ with archiva.Session("http://localhost:8080", "user", "pass", set_referer=True) 
 And as a CLI tool:
 
 ```sh
-$ python archiva-cli.py -h
+(venv) $ python archiva-cli.py -h
 usage: archiva-cli.py [-h] [-V {e,w,i,s}] -H HOST [-R] [-u USER] [-p PASSWORD]
 
 optional arguments:
@@ -57,3 +55,7 @@ optional arguments:
                         archiva password (default=), also taken from
                         $ARCHIVA_PWD
 ```
+
+## Resources
+
+Archiva API REST docs: [https://archiva.apache.org/docs/2.1.1/adminguide/webservices/rest.html](https://archiva.apache.org/docs/2.1.1/adminguide/webservices/rest.html).
