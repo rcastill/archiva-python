@@ -95,9 +95,26 @@ browseService/versionsList/{package_group}/{package_name}"
 		self.logger.i(f"GET {uri}")
 		res = requests.get(uri, headers=headers)
 
-		body = res.json()
 		if res.status_code == 200:
-			return body
+			return res.json()
+		else:
+			self.logger.e(f"status code: {res.status_code}")
+			raise ErrorResponse(res.status_code)
+
+	def get_download_infos(self, package_group, package_name, package_version):
+		headers = {"Cookie": self.session_cookie}
+		if self.set_referer:
+			headers["Referer"] = self.host
+
+		uri=\
+f"{self.host}/restServices/archivaServices/\
+browseService/artifactDownloadInfos/{package_group}/{package_name}/{package_version}"
+
+		self.logger.i(f"GET {uri}")
+		res = requests.get(uri, headers=headers)
+
+		if res.status_code == 200:
+			return res.json()
 		else:
 			self.logger.e(f"status code: {res.status_code}")
 			raise ErrorResponse(res.status_code)
