@@ -11,7 +11,7 @@ To **build** the documentation run [pdoc3](https://pdoc3.github.io/pdoc/):
 $ pdoc --html ./archiva
 ```
 
-Docstrings follow Google's convention.
+Docstrings follow [Google's](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html) convention.
 
 ## How to Install
 
