@@ -6,32 +6,40 @@ import sys
 import pprint
 
 def instruction_is_valid(ins):
+	"""Returns if instruction ins is valid (simple check)"""
 	return\
 		ins != "i" or\
 		not ins.startswith("versionsList:") or\
 		not ins.startswith("downloadInfos:")
 
 def instruction_execute(session, ins):
+	"""Executes instruction ins in session session"""
+
 	def get_group_and_name(group_p_name):
+		"""Returns (package_group, package_name) from full string"""
 		group_p_name_split = group_p_name.split(".")
 		return\
 			".".join(group_p_name_split[:-1]),\
 			group_p_name_split[-1]
 
+	# for object responses
 	pp = pprint.PrettyPrinter(indent=2)
 
 	if ins.startswith("versionsList:"):
+		# execute session.get_versions_list
 		group_p_name = ins.split(":")[1]
 		pp.pprint(session.get_versions_list(
 			*get_group_and_name(group_p_name)))
 
 	elif ins.startswith("downloadInfos:"):
+		# execute session.get_download_infos
 		_, group_p_name, version = ins.split(":")
 		pp.pprint(session.get_download_infos(
 			*get_group_and_name(group_p_name),
 			version))
 
 	elif ins.startswith("download:"):
+		# execute package download
 		_, group_p_name, version = ins.split(":")
 		filename = session.download(
 			*get_group_and_name(group_p_name),
@@ -43,10 +51,13 @@ def instruction_execute(session, ins):
 			print("No data.")
 
 	else:
+		# instruction not supported
 		print(f"Invalid instruction: {ins}",
 			file=sys.stderr)
 
 def get_args():
+	"""See: python archive-cli.py -h"""
+
 	parser = argparse.ArgumentParser()
 	parser.add_argument("-V", "--verbose-level",
 		help="set verbose level: e(rror)|[w(arning)]|i(nfo)|s(uppress)",
@@ -70,6 +81,7 @@ def get_args():
 
 	args = parser.parse_args()
 
+	# validate -x instruction
 	if not instruction_is_valid(args.execute):
 		print(f"Invalid instruction: {args.execute}",
 			file=sys.stderr, end=", ")
@@ -80,6 +92,8 @@ def get_args():
 		print(f"\t* downloadInfos:{{group}}.{{name}}:{{version}}",
 			file=sys.stderr)
 
+	# options -u/-p have precedence over environment variables counterparts,
+	# although env vars are encouraged
 	if args.user == "guest":
 		args.user = os.getenv("ARCHIVA_USR", "guest")
 	if args.password == "":
@@ -92,19 +106,23 @@ def main():
 	logger = archiva.Logger(args.verbose_level)
 
 	try:
+		# define session
 		s = archiva.Session(args.host,
 			args.user, args.password,
 			set_referer=args.set_referer, logger=logger)
+
+		# login
 		with s:
+			# interactive mode
 			if args.execute == "i":
 				while True:
 					ins = input("ins> ")
 					if ins == "q":
 						return
 					instruction_execute(s, ins)
+			# single instruction
 			else:
 				instruction_execute(s, args.execute)
-
 	except json.decoder.JSONDecodeError as e:
 		logger.e(f"could not decode: {e.doc}")
 	except archiva.ErrorResponse as e:

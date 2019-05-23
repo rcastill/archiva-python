@@ -1,0 +1,1087 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.6.2" />
+<title>archiva API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>archiva</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">import requests
+import json
+
+# Export Logger to main module
+from .logger import Logger
+
+class LoginRequest:
+        &#34;&#34;&#34;Representation of Archiva&#39;s loginRequest
+
+        Attributes:
+                u (str): login user
+                p (str): login password
+
+        See:
+                http://archiva.apache.org/docs/1.4-M4/rest-docs-redback-rest-api/el_ns0_loginRequest.html
+        &#34;&#34;&#34;
+
+        def __init__(self, user, password):
+                self.u = user
+                self.p = password
+
+        def get_xml(self):
+                &#34;&#34;&#34;Returns XML representation&#34;&#34;&#34;
+
+                return f&#34;&lt;loginRequest&gt;\
+                &lt;username&gt;{self.u}&lt;/username&gt;\
+                &lt;password&gt;{self.p}&lt;/password&gt;\
+                &lt;/loginRequest&gt;&#34;
+
+class ErrorResponse(Exception):
+        &#34;&#34;&#34;Custom exception for request errors produced in a Session
+
+        Attributes:
+                status_code (int): http response status code
+                error_messages (object): set if Archiva returns error object
+        &#34;&#34;&#34;
+
+        def __init__(self, status_code, error_messages=[]):
+                super().__init__(f&#34;Status Code: {status_code}; Error Messages: {error_messages}&#34;)
+                self.status_code = status_code
+                self.error_messages = error_messages
+
+class Session:
+        &#34;&#34;&#34;Represents Archiva Session
+
+        Attributes:
+                host (str): Archiva instance host; it should include protocol and port
+                user (str): Archiva session user
+                password (str): Archiva session password
+                *set_referer (bool): if True, all requests are sent with header &#34;Referer: {host}&#34;
+                logger (archiva.Logger): session logger; defaults to &#34;WARN&#34; log level
+                session_cookie (str): authenticated token
+
+        Notes:
+                - Caller should use `with` (RAII) pattern
+                - Caller should try-except `json.decoder.JSONDecodeError`, `archiva.ErrorResponse` on any operation over session
+        &#34;&#34;&#34;
+
+        def __init__(self, host, user, password, *, set_referer=False, logger=Logger()):
+                self.host = host
+                self.user = user
+                self.password = password
+                self.set_referer = set_referer
+                self.logger = logger
+
+        def __enter__(self):
+                &#34;&#34;&#34;RAII implementation; login on enter&#34;&#34;&#34;
+                self.login()
+                return self
+
+        def __exit__(self, type, value, traceback):
+                &#34;&#34;&#34;RAII implementation; logout on exit&#34;&#34;&#34;
+                self.logout()
+
+        def extract_session_cookie(set_cookie_value):
+                &#34;&#34;&#34;Internal utility method to extract JSESSIONID from Set-Cookie&#34;&#34;&#34;
+                start_idx = set_cookie_value.find(&#34;JSESSIONID&#34;)
+                end_idx = set_cookie_value.find(&#34;;&#34;, start_idx)
+                return set_cookie_value[start_idx:end_idx]
+
+        def login(self):
+                &#34;&#34;&#34;Login using user:password to get session token&#34;&#34;&#34;
+
+                # data is sent as xml and json response is expected
+                headers = {
+                        &#34;Content-Type&#34;: &#34;application/xml&#34;,
+                        &#34;Accept&#34;: &#34;application/json&#34;}
+                if self.set_referer:
+                        headers[&#34;Referer&#34;] = self.host
+
+                # make request
+                uri = f&#34;{self.host}/restServices/redbackServices/loginService/logIn&#34;
+                self.logger.i(f&#34;POST {uri}&#34;)
+                res = requests.post(uri,
+                        headers=headers,
+                        data=LoginRequest(self.user, self.password).get_xml())
+
+                if res.status_code != 200:
+                        # if not 200 OK it coult be:
+                        try:
+                                body = res.json()
+                                # authentication error (most probable)
+                                if &#34;errorMessages&#34; in body:
+                                        for err in body[&#34;errorMessages&#34;]:
+                                                self.logger.e(err[&#34;errorKey&#34;])
+                                        raise ErrorResponse(res.status_code, body[&#34;errorMessages&#34;])
+                                # unknown error
+                                else:
+                                        raise ErrorResponse(res.status_code, body)
+                        except json.decoder.JSONDecodeError as e:
+                                # unexpected error
+                                if e.doc == &#34;&#34;:
+                                        raise ErrorResponse(res.status_code)
+                                raise
+                else:
+                        # login succesful; set session_cookie as auth token
+                        self.session_cookie = Session.extract_session_cookie(
+                                res.headers[&#34;Set-Cookie&#34;])
+
+        def logout(self):
+                &#34;&#34;&#34;Logout from Archiva session&#34;&#34;&#34;
+
+                # must refer to current session
+                headers = {&#34;Cookie&#34;: self.session_cookie}
+                if self.set_referer:
+                        headers[&#34;Referer&#34;] = self.host
+
+                # make request
+                uri = f&#34;{self.host}/restServices/redbackServices/loginService/logout&#34;
+                self.logger.i(f&#34;GET {uri}&#34;)
+                requests.get(uri, headers=headers)
+
+        def get_versions_list(self, package_group, package_name):
+                &#34;&#34;&#34;versionsList endpoint
+
+                Args:
+                        package_group (str): package group
+                        package_name (str): package name
+
+                Returns:
+                        response(obj): if 200 OK; Archiva schema
+                                {
+                                        &#39;versions&#39;: [...]
+                                }
+
+                Raises:
+                        ErrorResponse if != 200 OK
+
+                See:
+                        http://archiva.apache.org/docs/1.4-M4/rest-docs-archiva-rest-api/resource_BrowseService.html#path__browseService_versionsList_-g-_-a-.html
+                &#34;&#34;&#34;
+
+                # must be authenticated
+                headers = {
+                        &#34;Cookie&#34;: self.session_cookie,
+                        &#34;Accept&#34;: &#34;application/json&#34;}
+                if self.set_referer:
+                        headers[&#34;Referer&#34;] = self.host
+
+                # make request
+                uri =\
+f&#34;{self.host}/restServices/archivaServices/\
+browseService/versionsList/{package_group}/{package_name}&#34;
+                self.logger.i(f&#34;GET {uri}&#34;)
+                res = requests.get(uri, headers=headers)
+
+                if res.status_code == 200:
+                        # if 200 OK, result should be json
+                        return res.json()
+                else:
+                        # unexpected
+                        self.logger.e(f&#34;status code: {res.status_code}&#34;)
+                        raise ErrorResponse(res.status_code)
+
+        def get_download_infos(self, package_group, package_name, package_version):
+                &#34;&#34;&#34;downloadInfos endpoint
+
+                Args:
+                        package_group (str): package group
+                        package_name (str): package name
+                        package_version (str): package version
+
+                Returns:
+                        response(obj): if 200 OK; Archiva schema
+                                [ { &#39;artifactId&#39;: &#39;&lt;packageName&gt;&#39;,
+                                    &#39;bundleDescription&#39;: None,
+                                    &#39;bundleDocUrl&#39;: None,
+                                    &#39;bundleExportPackage&#39;: None,
+                                    &#39;bundleExportService&#39;: None,
+                                    &#39;bundleImportPackage&#39;: None,
+                                    &#39;bundleLicense&#39;: None,
+                                    &#39;bundleName&#39;: None,
+                                    &#39;bundleRequireBundle&#39;: None,
+                                    &#39;bundleSymbolicName&#39;: None,
+                                    &#39;bundleVersion&#39;: None,
+                                    &#39;classifier&#39;: None,
+                                    &#39;context&#39;: &#39;&lt;context&gt;&#39;,
+                                    &#39;fileExtension&#39;: &#39;&lt;fileExtension&gt;&#39;,
+                                    &#39;goals&#39;: None,
+                                    &#39;groupId&#39;: &#39;{package_group}&#39;,
+                                    &#39;id&#39;: &#39;&lt;id == filename&gt;&#39;,
+                                    &#39;packaging&#39;: &#39;&lt;packaging ==? fileExtension&gt;&#39;,
+                                    &#39;path&#39;: &#39;&lt;path&gt;&#39;,
+                                    &#39;prefix&#39;: None,
+                                    &#39;repositoryId&#39;: &#39;&lt;repositoryId&gt;&#39;,
+                                    &#39;scope&#39;: None,
+                                    &#39;size&#39;: &#39;&lt;packageSize&gt;&#39;,
+                                    &#39;type&#39;: &#39;&lt;type ==? fileExtension&gt;&#39;,
+                                    &#39;url&#39;: &#39;&lt;downloadUrl&gt;&#39;,
+                                    &#39;version&#39;: &#39;{packageVersion}&#39;}]
+
+                Raises:
+                        ErrorResponse if != 200 OK
+                &#34;&#34;&#34;
+
+                # must be authenticated
+                headers = {&#34;Cookie&#34;: self.session_cookie}
+                if self.set_referer:
+                        headers[&#34;Referer&#34;] = self.host
+
+                # make request
+                uri=\
+f&#34;{self.host}/restServices/archivaServices/\
+browseService/artifactDownloadInfos/{package_group}/{package_name}/{package_version}&#34;
+                self.logger.i(f&#34;GET {uri}&#34;)
+                res = requests.get(uri, headers=headers)
+
+                if res.status_code == 200:
+                        # if 200 OK, result should be json
+                        return res.json()
+                else:
+                        # unexpected
+                        self.logger.e(f&#34;status code: {res.status_code}&#34;)
+                        raise ErrorResponse(res.status_code)
+
+        def download(self, g, n, v):
+                &#34;&#34;&#34;Download Package
+
+                Args:
+                        g (str): package group
+                        n (str): package name
+                        v (str): package version
+
+                Returns:
+                        filename (str): if file was written; if 200 OK
+                        False: if there was no content associated to (g, n, v)
+
+                Raises:
+                        See: `Session.get_download_info`
+                        
+                        ErrorResponse if != 200 OK when trying to GET download_info[&#34;url&#34;]
+                &#34;&#34;&#34;
+
+                # get download info
+                download_infos = self.get_download_infos(g, n, v)
+                if len(download_infos) &gt; 0:
+                        download_info = download_infos[0]
+                else:
+                        return False
+
+                # get download url and output filename
+                url = download_info[&#34;url&#34;]
+                filename = download_info[&#34;id&#34;]
+
+                # must be authenticated
+                headers = {&#34;Cookie&#34;: self.session_cookie}
+                if self.set_referer:
+                        headers[&#34;Referer&#34;] = self.host
+
+                # make request
+                self.logger.i(f&#34;GET {url}&#34;)
+                res = requests.get(url, headers=headers, allow_redirects=True)
+
+                if res.status_code == 200:
+                        # if 200 OK, write content to file &#34;filename&#34;
+                        with open(filename, &#34;wb&#34;) as f:
+                                f.write(res.content)
+                        return filename
+                else:
+                        # this should not happen, since download url was successfully
+                        # retrieved from self.get_download_infos
+                        self.logger.e(f&#34;status code: {res.status_code}&#34;)
+                        raise ErrorResponse(res.status_code)</code></pre>
+</details>
+</section>
+<section>
+<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+<dl>
+<dt><code class="name"><a title="archiva.logger" href="logger.html">archiva.logger</a></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="archiva.ErrorResponse"><code class="flex name class">
+<span>class <span class="ident">ErrorResponse</span></span>
+<span>(</span><span>status_code, error_messages=[])</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Custom exception for request errors produced in a Session</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>status_code</code></strong> :&ensp;<code>int</code></dt>
+<dd>http response status code</dd>
+<dt><strong><code>error_messages</code></strong> :&ensp;<code>object</code></dt>
+<dd>set if Archiva returns error object</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class ErrorResponse(Exception):
+        &#34;&#34;&#34;Custom exception for request errors produced in a Session
+
+        Attributes:
+                status_code (int): http response status code
+                error_messages (object): set if Archiva returns error object
+        &#34;&#34;&#34;
+
+        def __init__(self, status_code, error_messages=[]):
+                super().__init__(f&#34;Status Code: {status_code}; Error Messages: {error_messages}&#34;)
+                self.status_code = status_code
+                self.error_messages = error_messages</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="archiva.LoginRequest"><code class="flex name class">
+<span>class <span class="ident">LoginRequest</span></span>
+<span>(</span><span>user, password)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Representation of Archiva's loginRequest</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>u</code></strong> :&ensp;<code>str</code></dt>
+<dd>login user</dd>
+<dt><strong><code>p</code></strong> :&ensp;<code>str</code></dt>
+<dd>login password</dd>
+</dl>
+<h2 id="see">See</h2>
+<p><a href="http://archiva.apache.org/docs/1.4-M4/rest-docs-redback-rest-api/el_ns0_loginRequest.html">http://archiva.apache.org/docs/1.4-M4/rest-docs-redback-rest-api/el_ns0_loginRequest.html</a></p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class LoginRequest:
+        &#34;&#34;&#34;Representation of Archiva&#39;s loginRequest
+
+        Attributes:
+                u (str): login user
+                p (str): login password
+
+        See:
+                http://archiva.apache.org/docs/1.4-M4/rest-docs-redback-rest-api/el_ns0_loginRequest.html
+        &#34;&#34;&#34;
+
+        def __init__(self, user, password):
+                self.u = user
+                self.p = password
+
+        def get_xml(self):
+                &#34;&#34;&#34;Returns XML representation&#34;&#34;&#34;
+
+                return f&#34;&lt;loginRequest&gt;\
+                &lt;username&gt;{self.u}&lt;/username&gt;\
+                &lt;password&gt;{self.p}&lt;/password&gt;\
+                &lt;/loginRequest&gt;&#34;</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="archiva.LoginRequest.get_xml"><code class="name flex">
+<span>def <span class="ident">get_xml</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns XML representation</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_xml(self):
+        &#34;&#34;&#34;Returns XML representation&#34;&#34;&#34;
+
+        return f&#34;&lt;loginRequest&gt;\
+        &lt;username&gt;{self.u}&lt;/username&gt;\
+        &lt;password&gt;{self.p}&lt;/password&gt;\
+        &lt;/loginRequest&gt;&#34;</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="archiva.Session"><code class="flex name class">
+<span>class <span class="ident">Session</span></span>
+<span>(</span><span>host, user, password, *, set_referer=False, logger=<archiva.logger.Logger object at 0x10df5b240>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Represents Archiva Session</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>host</code></strong> :&ensp;<code>str</code></dt>
+<dd>Archiva instance host; it should include protocol and port</dd>
+<dt><strong><code>user</code></strong> :&ensp;<code>str</code></dt>
+<dd>Archiva session user</dd>
+<dt><strong><code>password</code></strong> :&ensp;<code>str</code></dt>
+<dd>Archiva session password</dd>
+<dt><strong><code>*set_referer</code></strong> :&ensp;<code>bool</code></dt>
+<dd>if True, all requests are sent with header "Referer: {host}"</dd>
+<dt><strong><a title="archiva.logger" href="logger.html"><code>archiva.logger</code></a></strong> :&ensp;<code>archiva.Logger</code></dt>
+<dd>session logger; defaults to "WARN" log level</dd>
+<dt><strong><code>session_cookie</code></strong> :&ensp;<code>str</code></dt>
+<dd>authenticated token</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>Caller should use <code>with</code> (RAII) pattern</li>
+<li>Caller should try-except <code>json.decoder.JSONDecodeError</code>, <a title="archiva.ErrorResponse" href="#archiva.ErrorResponse"><code>ErrorResponse</code></a> on any operation over session</li>
+</ul></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Session:
+        &#34;&#34;&#34;Represents Archiva Session
+
+        Attributes:
+                host (str): Archiva instance host; it should include protocol and port
+                user (str): Archiva session user
+                password (str): Archiva session password
+                *set_referer (bool): if True, all requests are sent with header &#34;Referer: {host}&#34;
+                logger (archiva.Logger): session logger; defaults to &#34;WARN&#34; log level
+                session_cookie (str): authenticated token
+
+        Notes:
+                - Caller should use `with` (RAII) pattern
+                - Caller should try-except `json.decoder.JSONDecodeError`, `archiva.ErrorResponse` on any operation over session
+        &#34;&#34;&#34;
+
+        def __init__(self, host, user, password, *, set_referer=False, logger=Logger()):
+                self.host = host
+                self.user = user
+                self.password = password
+                self.set_referer = set_referer
+                self.logger = logger
+
+        def __enter__(self):
+                &#34;&#34;&#34;RAII implementation; login on enter&#34;&#34;&#34;
+                self.login()
+                return self
+
+        def __exit__(self, type, value, traceback):
+                &#34;&#34;&#34;RAII implementation; logout on exit&#34;&#34;&#34;
+                self.logout()
+
+        def extract_session_cookie(set_cookie_value):
+                &#34;&#34;&#34;Internal utility method to extract JSESSIONID from Set-Cookie&#34;&#34;&#34;
+                start_idx = set_cookie_value.find(&#34;JSESSIONID&#34;)
+                end_idx = set_cookie_value.find(&#34;;&#34;, start_idx)
+                return set_cookie_value[start_idx:end_idx]
+
+        def login(self):
+                &#34;&#34;&#34;Login using user:password to get session token&#34;&#34;&#34;
+
+                # data is sent as xml and json response is expected
+                headers = {
+                        &#34;Content-Type&#34;: &#34;application/xml&#34;,
+                        &#34;Accept&#34;: &#34;application/json&#34;}
+                if self.set_referer:
+                        headers[&#34;Referer&#34;] = self.host
+
+                # make request
+                uri = f&#34;{self.host}/restServices/redbackServices/loginService/logIn&#34;
+                self.logger.i(f&#34;POST {uri}&#34;)
+                res = requests.post(uri,
+                        headers=headers,
+                        data=LoginRequest(self.user, self.password).get_xml())
+
+                if res.status_code != 200:
+                        # if not 200 OK it coult be:
+                        try:
+                                body = res.json()
+                                # authentication error (most probable)
+                                if &#34;errorMessages&#34; in body:
+                                        for err in body[&#34;errorMessages&#34;]:
+                                                self.logger.e(err[&#34;errorKey&#34;])
+                                        raise ErrorResponse(res.status_code, body[&#34;errorMessages&#34;])
+                                # unknown error
+                                else:
+                                        raise ErrorResponse(res.status_code, body)
+                        except json.decoder.JSONDecodeError as e:
+                                # unexpected error
+                                if e.doc == &#34;&#34;:
+                                        raise ErrorResponse(res.status_code)
+                                raise
+                else:
+                        # login succesful; set session_cookie as auth token
+                        self.session_cookie = Session.extract_session_cookie(
+                                res.headers[&#34;Set-Cookie&#34;])
+
+        def logout(self):
+                &#34;&#34;&#34;Logout from Archiva session&#34;&#34;&#34;
+
+                # must refer to current session
+                headers = {&#34;Cookie&#34;: self.session_cookie}
+                if self.set_referer:
+                        headers[&#34;Referer&#34;] = self.host
+
+                # make request
+                uri = f&#34;{self.host}/restServices/redbackServices/loginService/logout&#34;
+                self.logger.i(f&#34;GET {uri}&#34;)
+                requests.get(uri, headers=headers)
+
+        def get_versions_list(self, package_group, package_name):
+                &#34;&#34;&#34;versionsList endpoint
+
+                Args:
+                        package_group (str): package group
+                        package_name (str): package name
+
+                Returns:
+                        response(obj): if 200 OK; Archiva schema
+                                {
+                                        &#39;versions&#39;: [...]
+                                }
+
+                Raises:
+                        ErrorResponse if != 200 OK
+
+                See:
+                        http://archiva.apache.org/docs/1.4-M4/rest-docs-archiva-rest-api/resource_BrowseService.html#path__browseService_versionsList_-g-_-a-.html
+                &#34;&#34;&#34;
+
+                # must be authenticated
+                headers = {
+                        &#34;Cookie&#34;: self.session_cookie,
+                        &#34;Accept&#34;: &#34;application/json&#34;}
+                if self.set_referer:
+                        headers[&#34;Referer&#34;] = self.host
+
+                # make request
+                uri =\
+f&#34;{self.host}/restServices/archivaServices/\
+browseService/versionsList/{package_group}/{package_name}&#34;
+                self.logger.i(f&#34;GET {uri}&#34;)
+                res = requests.get(uri, headers=headers)
+
+                if res.status_code == 200:
+                        # if 200 OK, result should be json
+                        return res.json()
+                else:
+                        # unexpected
+                        self.logger.e(f&#34;status code: {res.status_code}&#34;)
+                        raise ErrorResponse(res.status_code)
+
+        def get_download_infos(self, package_group, package_name, package_version):
+                &#34;&#34;&#34;downloadInfos endpoint
+
+                Args:
+                        package_group (str): package group
+                        package_name (str): package name
+                        package_version (str): package version
+
+                Returns:
+                        response(obj): if 200 OK; Archiva schema
+                                [ { &#39;artifactId&#39;: &#39;&lt;packageName&gt;&#39;,
+                                    &#39;bundleDescription&#39;: None,
+                                    &#39;bundleDocUrl&#39;: None,
+                                    &#39;bundleExportPackage&#39;: None,
+                                    &#39;bundleExportService&#39;: None,
+                                    &#39;bundleImportPackage&#39;: None,
+                                    &#39;bundleLicense&#39;: None,
+                                    &#39;bundleName&#39;: None,
+                                    &#39;bundleRequireBundle&#39;: None,
+                                    &#39;bundleSymbolicName&#39;: None,
+                                    &#39;bundleVersion&#39;: None,
+                                    &#39;classifier&#39;: None,
+                                    &#39;context&#39;: &#39;&lt;context&gt;&#39;,
+                                    &#39;fileExtension&#39;: &#39;&lt;fileExtension&gt;&#39;,
+                                    &#39;goals&#39;: None,
+                                    &#39;groupId&#39;: &#39;{package_group}&#39;,
+                                    &#39;id&#39;: &#39;&lt;id == filename&gt;&#39;,
+                                    &#39;packaging&#39;: &#39;&lt;packaging ==? fileExtension&gt;&#39;,
+                                    &#39;path&#39;: &#39;&lt;path&gt;&#39;,
+                                    &#39;prefix&#39;: None,
+                                    &#39;repositoryId&#39;: &#39;&lt;repositoryId&gt;&#39;,
+                                    &#39;scope&#39;: None,
+                                    &#39;size&#39;: &#39;&lt;packageSize&gt;&#39;,
+                                    &#39;type&#39;: &#39;&lt;type ==? fileExtension&gt;&#39;,
+                                    &#39;url&#39;: &#39;&lt;downloadUrl&gt;&#39;,
+                                    &#39;version&#39;: &#39;{packageVersion}&#39;}]
+
+                Raises:
+                        ErrorResponse if != 200 OK
+                &#34;&#34;&#34;
+
+                # must be authenticated
+                headers = {&#34;Cookie&#34;: self.session_cookie}
+                if self.set_referer:
+                        headers[&#34;Referer&#34;] = self.host
+
+                # make request
+                uri=\
+f&#34;{self.host}/restServices/archivaServices/\
+browseService/artifactDownloadInfos/{package_group}/{package_name}/{package_version}&#34;
+                self.logger.i(f&#34;GET {uri}&#34;)
+                res = requests.get(uri, headers=headers)
+
+                if res.status_code == 200:
+                        # if 200 OK, result should be json
+                        return res.json()
+                else:
+                        # unexpected
+                        self.logger.e(f&#34;status code: {res.status_code}&#34;)
+                        raise ErrorResponse(res.status_code)
+
+        def download(self, g, n, v):
+                &#34;&#34;&#34;Download Package
+
+                Args:
+                        g (str): package group
+                        n (str): package name
+                        v (str): package version
+
+                Returns:
+                        filename (str): if file was written; if 200 OK
+                        False: if there was no content associated to (g, n, v)
+
+                Raises:
+                        See: `Session.get_download_info`
+                        
+                        ErrorResponse if != 200 OK when trying to GET download_info[&#34;url&#34;]
+                &#34;&#34;&#34;
+
+                # get download info
+                download_infos = self.get_download_infos(g, n, v)
+                if len(download_infos) &gt; 0:
+                        download_info = download_infos[0]
+                else:
+                        return False
+
+                # get download url and output filename
+                url = download_info[&#34;url&#34;]
+                filename = download_info[&#34;id&#34;]
+
+                # must be authenticated
+                headers = {&#34;Cookie&#34;: self.session_cookie}
+                if self.set_referer:
+                        headers[&#34;Referer&#34;] = self.host
+
+                # make request
+                self.logger.i(f&#34;GET {url}&#34;)
+                res = requests.get(url, headers=headers, allow_redirects=True)
+
+                if res.status_code == 200:
+                        # if 200 OK, write content to file &#34;filename&#34;
+                        with open(filename, &#34;wb&#34;) as f:
+                                f.write(res.content)
+                        return filename
+                else:
+                        # this should not happen, since download url was successfully
+                        # retrieved from self.get_download_infos
+                        self.logger.e(f&#34;status code: {res.status_code}&#34;)
+                        raise ErrorResponse(res.status_code)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="archiva.Session.download"><code class="name flex">
+<span>def <span class="ident">download</span></span>(<span>self, g, n, v)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Download Package</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>g</code></strong> :&ensp;<code>str</code></dt>
+<dd>package group</dd>
+<dt><strong><code>n</code></strong> :&ensp;<code>str</code></dt>
+<dd>package name</dd>
+<dt><strong><code>v</code></strong> :&ensp;<code>str</code></dt>
+<dd>package version</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>filename</code></strong> :&ensp;<code>str</code></dt>
+<dd>if file was written; if 200 OK</dd>
+<dt><strong><code>False</code></strong></dt>
+<dd>if there was no content associated to (g, n, v)</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><strong><code>See</code></strong></dt>
+<dd><code>Session.get_download_info</code></dd>
+<dt><a title="archiva.ErrorResponse" href="#archiva.ErrorResponse"><code>ErrorResponse</code></a> <code>if</code> != <code>200</code> <code>OK</code> <code>when</code> <code>trying</code> <code>to</code> <code>GET</code> <code>download_info</code>[<code>"url"</code>]</dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def download(self, g, n, v):
+        &#34;&#34;&#34;Download Package
+
+        Args:
+                g (str): package group
+                n (str): package name
+                v (str): package version
+
+        Returns:
+                filename (str): if file was written; if 200 OK
+                False: if there was no content associated to (g, n, v)
+
+        Raises:
+                See: `Session.get_download_info`
+                
+                ErrorResponse if != 200 OK when trying to GET download_info[&#34;url&#34;]
+        &#34;&#34;&#34;
+
+        # get download info
+        download_infos = self.get_download_infos(g, n, v)
+        if len(download_infos) &gt; 0:
+                download_info = download_infos[0]
+        else:
+                return False
+
+        # get download url and output filename
+        url = download_info[&#34;url&#34;]
+        filename = download_info[&#34;id&#34;]
+
+        # must be authenticated
+        headers = {&#34;Cookie&#34;: self.session_cookie}
+        if self.set_referer:
+                headers[&#34;Referer&#34;] = self.host
+
+        # make request
+        self.logger.i(f&#34;GET {url}&#34;)
+        res = requests.get(url, headers=headers, allow_redirects=True)
+
+        if res.status_code == 200:
+                # if 200 OK, write content to file &#34;filename&#34;
+                with open(filename, &#34;wb&#34;) as f:
+                        f.write(res.content)
+                return filename
+        else:
+                # this should not happen, since download url was successfully
+                # retrieved from self.get_download_infos
+                self.logger.e(f&#34;status code: {res.status_code}&#34;)
+                raise ErrorResponse(res.status_code)</code></pre>
+</details>
+</dd>
+<dt id="archiva.Session.extract_session_cookie"><code class="name flex">
+<span>def <span class="ident">extract_session_cookie</span></span>(<span>set_cookie_value)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Internal utility method to extract JSESSIONID from Set-Cookie</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def extract_session_cookie(set_cookie_value):
+        &#34;&#34;&#34;Internal utility method to extract JSESSIONID from Set-Cookie&#34;&#34;&#34;
+        start_idx = set_cookie_value.find(&#34;JSESSIONID&#34;)
+        end_idx = set_cookie_value.find(&#34;;&#34;, start_idx)
+        return set_cookie_value[start_idx:end_idx]</code></pre>
+</details>
+</dd>
+<dt id="archiva.Session.get_download_infos"><code class="name flex">
+<span>def <span class="ident">get_download_infos</span></span>(<span>self, package_group, package_name, package_version)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>downloadInfos endpoint</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>package_group</code></strong> :&ensp;<code>str</code></dt>
+<dd>package group</dd>
+<dt><strong><code>package_name</code></strong> :&ensp;<code>str</code></dt>
+<dd>package name</dd>
+<dt><strong><code>package_version</code></strong> :&ensp;<code>str</code></dt>
+<dd>package version</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>response</code>(<code>obj</code>): <code>if</code> <code>200</code> <code>OK</code>; <code>Archiva</code> <code>schema</code></dt>
+<dd>[ { 'artifactId': '<packageName>',
+'bundleDescription': None,
+'bundleDocUrl': None,
+'bundleExportPackage': None,
+'bundleExportService': None,
+'bundleImportPackage': None,
+'bundleLicense': None,
+'bundleName': None,
+'bundleRequireBundle': None,
+'bundleSymbolicName': None,
+'bundleVersion': None,
+'classifier': None,
+'context': '<context>',
+'fileExtension': '<fileExtension>',
+'goals': None,
+'groupId': '{package_group}',
+'id': '<id == filename>',
+'packaging': '<packaging ==? fileExtension>',
+'path': '<path>',
+'prefix': None,
+'repositoryId': '<repositoryId>',
+'scope': None,
+'size': '<packageSize>',
+'type': '<type ==? fileExtension>',
+'url': '<downloadUrl>',
+'version': '{packageVersion}'}]</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><a title="archiva.ErrorResponse" href="#archiva.ErrorResponse"><code>ErrorResponse</code></a> <code>if</code> != <code>200</code> <code>OK</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">        def get_download_infos(self, package_group, package_name, package_version):
+                &#34;&#34;&#34;downloadInfos endpoint
+
+                Args:
+                        package_group (str): package group
+                        package_name (str): package name
+                        package_version (str): package version
+
+                Returns:
+                        response(obj): if 200 OK; Archiva schema
+                                [ { &#39;artifactId&#39;: &#39;&lt;packageName&gt;&#39;,
+                                    &#39;bundleDescription&#39;: None,
+                                    &#39;bundleDocUrl&#39;: None,
+                                    &#39;bundleExportPackage&#39;: None,
+                                    &#39;bundleExportService&#39;: None,
+                                    &#39;bundleImportPackage&#39;: None,
+                                    &#39;bundleLicense&#39;: None,
+                                    &#39;bundleName&#39;: None,
+                                    &#39;bundleRequireBundle&#39;: None,
+                                    &#39;bundleSymbolicName&#39;: None,
+                                    &#39;bundleVersion&#39;: None,
+                                    &#39;classifier&#39;: None,
+                                    &#39;context&#39;: &#39;&lt;context&gt;&#39;,
+                                    &#39;fileExtension&#39;: &#39;&lt;fileExtension&gt;&#39;,
+                                    &#39;goals&#39;: None,
+                                    &#39;groupId&#39;: &#39;{package_group}&#39;,
+                                    &#39;id&#39;: &#39;&lt;id == filename&gt;&#39;,
+                                    &#39;packaging&#39;: &#39;&lt;packaging ==? fileExtension&gt;&#39;,
+                                    &#39;path&#39;: &#39;&lt;path&gt;&#39;,
+                                    &#39;prefix&#39;: None,
+                                    &#39;repositoryId&#39;: &#39;&lt;repositoryId&gt;&#39;,
+                                    &#39;scope&#39;: None,
+                                    &#39;size&#39;: &#39;&lt;packageSize&gt;&#39;,
+                                    &#39;type&#39;: &#39;&lt;type ==? fileExtension&gt;&#39;,
+                                    &#39;url&#39;: &#39;&lt;downloadUrl&gt;&#39;,
+                                    &#39;version&#39;: &#39;{packageVersion}&#39;}]
+
+                Raises:
+                        ErrorResponse if != 200 OK
+                &#34;&#34;&#34;
+
+                # must be authenticated
+                headers = {&#34;Cookie&#34;: self.session_cookie}
+                if self.set_referer:
+                        headers[&#34;Referer&#34;] = self.host
+
+                # make request
+                uri=\
+f&#34;{self.host}/restServices/archivaServices/\
+browseService/artifactDownloadInfos/{package_group}/{package_name}/{package_version}&#34;
+                self.logger.i(f&#34;GET {uri}&#34;)
+                res = requests.get(uri, headers=headers)
+
+                if res.status_code == 200:
+                        # if 200 OK, result should be json
+                        return res.json()
+                else:
+                        # unexpected
+                        self.logger.e(f&#34;status code: {res.status_code}&#34;)
+                        raise ErrorResponse(res.status_code)</code></pre>
+</details>
+</dd>
+<dt id="archiva.Session.get_versions_list"><code class="name flex">
+<span>def <span class="ident">get_versions_list</span></span>(<span>self, package_group, package_name)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>versionsList endpoint</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>package_group</code></strong> :&ensp;<code>str</code></dt>
+<dd>package group</dd>
+<dt><strong><code>package_name</code></strong> :&ensp;<code>str</code></dt>
+<dd>package name</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>response</code>(<code>obj</code>): <code>if</code> <code>200</code> <code>OK</code>; <code>Archiva</code> <code>schema</code></dt>
+<dd>{
+'versions': [&hellip;]
+}</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><a title="archiva.ErrorResponse" href="#archiva.ErrorResponse"><code>ErrorResponse</code></a> <code>if</code> != <code>200</code> <code>OK</code></dt>
+<dd>&nbsp;</dd>
+</dl>
+<h2 id="see">See</h2>
+<p><a href="http://archiva.apache.org/docs/1.4-M4/rest-docs-archiva-rest-api/resource_BrowseService.html#path__browseService_versionsList_-g-_-a-.html">http://archiva.apache.org/docs/1.4-M4/rest-docs-archiva-rest-api/resource_BrowseService.html#path__browseService_versionsList_-g-_-a-.html</a></p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">        def get_versions_list(self, package_group, package_name):
+                &#34;&#34;&#34;versionsList endpoint
+
+                Args:
+                        package_group (str): package group
+                        package_name (str): package name
+
+                Returns:
+                        response(obj): if 200 OK; Archiva schema
+                                {
+                                        &#39;versions&#39;: [...]
+                                }
+
+                Raises:
+                        ErrorResponse if != 200 OK
+
+                See:
+                        http://archiva.apache.org/docs/1.4-M4/rest-docs-archiva-rest-api/resource_BrowseService.html#path__browseService_versionsList_-g-_-a-.html
+                &#34;&#34;&#34;
+
+                # must be authenticated
+                headers = {
+                        &#34;Cookie&#34;: self.session_cookie,
+                        &#34;Accept&#34;: &#34;application/json&#34;}
+                if self.set_referer:
+                        headers[&#34;Referer&#34;] = self.host
+
+                # make request
+                uri =\
+f&#34;{self.host}/restServices/archivaServices/\
+browseService/versionsList/{package_group}/{package_name}&#34;
+                self.logger.i(f&#34;GET {uri}&#34;)
+                res = requests.get(uri, headers=headers)
+
+                if res.status_code == 200:
+                        # if 200 OK, result should be json
+                        return res.json()
+                else:
+                        # unexpected
+                        self.logger.e(f&#34;status code: {res.status_code}&#34;)
+                        raise ErrorResponse(res.status_code)</code></pre>
+</details>
+</dd>
+<dt id="archiva.Session.login"><code class="name flex">
+<span>def <span class="ident">login</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Login using user:password to get session token</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def login(self):
+        &#34;&#34;&#34;Login using user:password to get session token&#34;&#34;&#34;
+
+        # data is sent as xml and json response is expected
+        headers = {
+                &#34;Content-Type&#34;: &#34;application/xml&#34;,
+                &#34;Accept&#34;: &#34;application/json&#34;}
+        if self.set_referer:
+                headers[&#34;Referer&#34;] = self.host
+
+        # make request
+        uri = f&#34;{self.host}/restServices/redbackServices/loginService/logIn&#34;
+        self.logger.i(f&#34;POST {uri}&#34;)
+        res = requests.post(uri,
+                headers=headers,
+                data=LoginRequest(self.user, self.password).get_xml())
+
+        if res.status_code != 200:
+                # if not 200 OK it coult be:
+                try:
+                        body = res.json()
+                        # authentication error (most probable)
+                        if &#34;errorMessages&#34; in body:
+                                for err in body[&#34;errorMessages&#34;]:
+                                        self.logger.e(err[&#34;errorKey&#34;])
+                                raise ErrorResponse(res.status_code, body[&#34;errorMessages&#34;])
+                        # unknown error
+                        else:
+                                raise ErrorResponse(res.status_code, body)
+                except json.decoder.JSONDecodeError as e:
+                        # unexpected error
+                        if e.doc == &#34;&#34;:
+                                raise ErrorResponse(res.status_code)
+                        raise
+        else:
+                # login succesful; set session_cookie as auth token
+                self.session_cookie = Session.extract_session_cookie(
+                        res.headers[&#34;Set-Cookie&#34;])</code></pre>
+</details>
+</dd>
+<dt id="archiva.Session.logout"><code class="name flex">
+<span>def <span class="ident">logout</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Logout from Archiva session</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def logout(self):
+        &#34;&#34;&#34;Logout from Archiva session&#34;&#34;&#34;
+
+        # must refer to current session
+        headers = {&#34;Cookie&#34;: self.session_cookie}
+        if self.set_referer:
+                headers[&#34;Referer&#34;] = self.host
+
+        # make request
+        uri = f&#34;{self.host}/restServices/redbackServices/loginService/logout&#34;
+        self.logger.i(f&#34;GET {uri}&#34;)
+        requests.get(uri, headers=headers)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<ul>
+<li><code><a title="archiva.logger" href="logger.html">archiva.logger</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="archiva.ErrorResponse" href="#archiva.ErrorResponse">ErrorResponse</a></code></h4>
+</li>
+<li>
+<h4><code><a title="archiva.LoginRequest" href="#archiva.LoginRequest">LoginRequest</a></code></h4>
+<ul class="">
+<li><code><a title="archiva.LoginRequest.get_xml" href="#archiva.LoginRequest.get_xml">get_xml</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="archiva.Session" href="#archiva.Session">Session</a></code></h4>
+<ul class="">
+<li><code><a title="archiva.Session.download" href="#archiva.Session.download">download</a></code></li>
+<li><code><a title="archiva.Session.extract_session_cookie" href="#archiva.Session.extract_session_cookie">extract_session_cookie</a></code></li>
+<li><code><a title="archiva.Session.get_download_infos" href="#archiva.Session.get_download_infos">get_download_infos</a></code></li>
+<li><code><a title="archiva.Session.get_versions_list" href="#archiva.Session.get_versions_list">get_versions_list</a></code></li>
+<li><code><a title="archiva.Session.login" href="#archiva.Session.login">login</a></code></li>
+<li><code><a title="archiva.Session.logout" href="#archiva.Session.logout">logout</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.2</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
