@@ -2,17 +2,16 @@
 
 `archiva-python` is a minimal python3 interface for a subset of Apache Archiva's REST API.
 
-## Roadmap
+## User Documentation
 
-The following feature subset is planned to be supported:
+Documentation can be found at: [https://rcastill.github.io/archiva-python/](https://rcastill.github.io/archiva-python/)
 
-- [x] Session support
-  - [x] Login
-  - [x] Logout
-  - [x] `with` "RAII" support
-- [x] versionsList
-- [x] artifactDownloadInfos
-- [x] Download a package
+To **build** the documentation run [pdoc3](https://pdoc3.github.io/pdoc/):
+```sh
+$ pdoc --html ./archiva
+```
+
+Docstrings follow Google's convention.
 
 ## How to Install
 
@@ -79,3 +78,15 @@ Interactive mode (`[-x i]`) enters a loop asking for instructions over stdin. Su
 ## Resources
 
 Archiva API REST docs: [https://archiva.apache.org/docs/2.1.1/adminguide/webservices/rest.html](https://archiva.apache.org/docs/2.1.1/adminguide/webservices/rest.html).
+
+## Roadmap
+
+The following feature subset is planned to be supported:
+
+- [x] Session support
+  - [x] Login
+  - [x] Logout
+  - [x] `with` "RAII" support
+- [x] versionsList
+- [x] artifactDownloadInfos
+- [x] Download a package
