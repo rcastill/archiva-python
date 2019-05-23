@@ -11,7 +11,7 @@ The following feature subset is planned to be supported:
   - [x] Logout
   - [x] `with` "RAII" support
 - [x] versionsList
-- [ ] artifactDownloadInfos
+- [x] artifactDownloadInfos
 - [ ] Download a package
 
 ## How to Install
@@ -32,7 +32,7 @@ It can be used as a python library:
 import archiva
 
 with archiva.Session("http://localhost:8080", "user", "pass", set_referer=True) as s:
-  versions = s.list_versions("com.myorganization.division", "MyPackage")
+  versions = s.get_versions_list("com.myorganization.division", "MyPackage")
   print(f"com.myorganization.division.MyPackage versions: {versions}")
 ```
 
@@ -41,6 +41,7 @@ And as a CLI tool:
 ```sh
 (venv) $ python archiva-cli.py -h
 usage: archiva-cli.py [-h] [-V {e,w,i,s}] -H HOST [-R] [-u USER] [-p PASSWORD]
+                      [-x EXECUTE]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -54,7 +55,25 @@ optional arguments:
   -p PASSWORD, --password PASSWORD
                         archiva password (default=), also taken from
                         $ARCHIVA_PWD
+  -x EXECUTE, --execute EXECUTE
+                        execute instruction (default=i(nteractive))
 ```
+
+Currently, `-x` supports:
+
+- `versionsList:{packageGroup}.{packageName}`
+- `downloadInfos:{packageGroup}.{packageName}:{packageVersion}`
+
+Interactive mode (`[-x i]`) enters a loop asking for instructions over stdin. Supported instructions are the same as above, adding special command `q` to quit interactive mode.
+
+**Example**
+
+```sh
+(venv) $ python archiva-cli.py -H http://localhost:8080 -R -x versionsList:com.organization.mydivision.MyPackage
+{'versions': ['0.1.0']}
+```
+
+
 
 ## Resources
 
