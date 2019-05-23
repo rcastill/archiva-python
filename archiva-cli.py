@@ -18,21 +18,33 @@ def instruction_execute(session, ins):
 			".".join(group_p_name_split[:-1]),\
 			group_p_name_split[-1]
 
+	pp = pprint.PrettyPrinter(indent=2)
+
 	if ins.startswith("versionsList:"):
 		group_p_name = ins.split(":")[1]
-		return session.get_versions_list(
-			*get_group_and_name(group_p_name))
+		pp.pprint(session.get_versions_list(
+			*get_group_and_name(group_p_name)))
 
 	elif ins.startswith("downloadInfos:"):
 		_, group_p_name, version = ins.split(":")
-		return session.get_download_infos(
+		pp.pprint(session.get_download_infos(
+			*get_group_and_name(group_p_name),
+			version))
+
+	elif ins.startswith("download:"):
+		_, group_p_name, version = ins.split(":")
+		filename = session.download(
 			*get_group_and_name(group_p_name),
 			version)
+
+		if filename:
+			print(f"Output file: {filename}")
+		else:
+			print("No data.")
 
 	else:
 		print(f"Invalid instruction: {ins}",
 			file=sys.stderr)
-
 
 def get_args():
 	parser = argparse.ArgumentParser()
@@ -83,22 +95,20 @@ def main():
 		s = archiva.Session(args.host,
 			args.user, args.password,
 			set_referer=args.set_referer, logger=logger)
-		pp = pprint.PrettyPrinter(indent=2)
 		with s:
 			if args.execute == "i":
 				while True:
 					ins = input("ins> ")
 					if ins == "q":
 						return
-					pp.pprint(instruction_execute(s, ins))
+					instruction_execute(s, ins)
 			else:
-				pp.pprint(instruction_execute(s, args.execute))
+				instruction_execute(s, args.execute)
 
 	except json.decoder.JSONDecodeError as e:
 		logger.e(f"could not decode: {e.doc}")
 	except archiva.ErrorResponse as e:
 		logger.e(e)
-
 
 
 if __name__ == "__main__":

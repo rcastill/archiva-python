@@ -118,3 +118,29 @@ browseService/artifactDownloadInfos/{package_group}/{package_name}/{package_vers
 		else:
 			self.logger.e(f"status code: {res.status_code}")
 			raise ErrorResponse(res.status_code)
+
+	def download(self, g, n, v):
+		download_infos = self.get_download_infos(g, n, v)
+		if len(download_infos) > 0:
+			download_info = download_infos[0]
+		else:
+			return False
+
+		url = download_info["url"]
+		filename = download_info["id"]
+
+		headers = {"Cookie": self.session_cookie}
+		if self.set_referer:
+			headers["Referer"] = self.host
+
+		self.logger.i(f"GET {url}")
+		res = requests.get(url, headers=headers, allow_redirects=True)
+
+		if res.status_code == 200:
+			with open(filename, "wb") as f:
+				f.write(res.content)
+			return filename
+		else:
+			self.logger.e(f"status code: {res.status_code}")
+			raise ErrorResponse(res.status_code)
+

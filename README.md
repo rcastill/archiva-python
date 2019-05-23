@@ -12,7 +12,7 @@ The following feature subset is planned to be supported:
   - [x] `with` "RAII" support
 - [x] versionsList
 - [x] artifactDownloadInfos
-- [ ] Download a package
+- [x] Download a package
 
 ## How to Install
 
@@ -63,6 +63,7 @@ Currently, `-x` supports:
 
 - `versionsList:{packageGroup}.{packageName}`
 - `downloadInfos:{packageGroup}.{packageName}:{packageVersion}`
+- `download:{packageGroup}.{packageName}:{packageVersion}`
 
 Interactive mode (`[-x i]`) enters a loop asking for instructions over stdin. Supported instructions are the same as above, adding special command `q` to quit interactive mode.
 
